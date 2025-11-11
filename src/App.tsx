@@ -1,5 +1,5 @@
 import AppRoutes from "./AppRoutes"
-import { useFetchUserInfo } from "@/components/auth/useFetchUserInfo"
+import { useFetchUserInfo } from "@/hooks/useFetchUserInfo"
 
 const App = () => {
   useFetchUserInfo()

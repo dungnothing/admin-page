@@ -1,4 +1,3 @@
-import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import "./index.css"
 import "swiper/swiper-bundle.css"
@@ -11,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css"
 import { Zoom } from "react-toastify"
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  <>
     <ThemeProvider>
       <App />
       <ToastContainer
@@ -28,5 +27,5 @@ createRoot(document.getElementById("root")!).render(
         transition={Zoom}
       />
     </ThemeProvider>
-  </StrictMode>,
+  </>,
 )
