@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap") layer(base);
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap") layer(base);
 
 @import "tailwindcss";
 
@@ -6,7 +6,7 @@
 
 @theme {
   --font-*: initial;
-  --font-outfit: Outfit, sans-serif;
+  --font-inter: Inter, sans-serif;
 
   --breakpoint-*: initial;
   --breakpoint-2xsm: 375px;
@@ -178,7 +178,7 @@
     cursor: pointer;
   }
   body {
-    @apply relative font-normal font-outfit z-1 bg-gray-50;
+    @apply relative font-normal font-inter z-1 bg-gray-50;
   }
 }
 
