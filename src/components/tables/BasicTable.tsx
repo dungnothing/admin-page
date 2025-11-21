@@ -11,6 +11,7 @@ interface BasicTableProps {
   sortDirection?: "asc" | "desc"
   pageSize?: number
   onPageChange?: (page: number) => void
+  onPageSizeChange?: (page: any) => void
   stickyHeader?: boolean
   maxHeight?: string
   minHeight?: string
@@ -27,6 +28,7 @@ const BasicTable = ({
   sortDirection,
   pageSize,
   onPageChange,
+  onPageSizeChange,
   emptyContent,
   onSort,
 }: BasicTableProps) => {
@@ -35,21 +37,13 @@ const BasicTable = ({
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 ">
       <Table
         className=""
         style={{
           ...(columns.some((col) => col.width?.includes("%")) && { tableLayout: "fixed", width: "100%" }),
         }}
       >
-        {pagination && (
-          <TablePagination
-            total={total || 0}
-            page={page || 0}
-            pageSize={pageSize || 0}
-            onPageChange={onPageChange || (() => {})}
-          />
-        )}
         <TableHeader className="bg-gray-secondary rounded-md">
           <TableRow className="rounded-md border-none">
             {columns.map((column, index) => (
@@ -81,7 +75,7 @@ const BasicTable = ({
         </TableHeader>
         <TableBody>
           {data.map((row, index) => (
-            <TableRow key={row.id}>
+            <TableRow key={row.id || row._id || index}>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
@@ -126,6 +120,15 @@ const BasicTable = ({
           ))}
         </TableBody>
       </Table>
+      {pagination && (
+        <TablePagination
+          total={total || 0}
+          page={page || 0}
+          pageSize={pageSize || 0}
+          onPageChange={onPageChange || (() => {})}
+          onPageSizeChange={onPageSizeChange || (() => {})}
+        />
+      )}
     </div>
   )
 }

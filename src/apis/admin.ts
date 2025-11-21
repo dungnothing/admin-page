@@ -14,3 +14,8 @@ export const getDashboardAPI = async () => {
   const response = await axiosInstance.get("/v2/admins/dashboard")
   return response.data
 }
+
+export const getUserAPI = async (query: any) => {
+  const response = await axiosInstance.get("/v2/admins/user", { params: query })
+  return response.data
+}

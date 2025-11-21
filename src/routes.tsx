@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 import AppLayout from "./layout/AppLayout"
 import Home from "./pages/Dashboard/Home"
-import UserProfiles from "./pages/UserProfiles"
+import UserList from "./pages/UserList"
 import Calendar from "./pages/Calendar"
 import Blank from "./pages/Blank"
 import FormElements from "./pages/Forms/FormElements"
@@ -46,7 +46,7 @@ export const routes: AppRoute[] = [
     loader: dashboardLoader,
     children: [
       { path: "/dashboard", element: <Home /> },
-      { path: "/user", element: <UserProfiles /> },
+      { path: "/user", element: <UserList /> },
       { path: "/calendar", element: <Calendar /> },
       { path: "/blank", element: <Blank /> },
       { path: "/form-elements", element: <FormElements /> },

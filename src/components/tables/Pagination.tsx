@@ -89,7 +89,7 @@ export function TablePagination({
     <div className="w-full flex items-center justify-between">
       {showTotal && total > 0 && (
         <div className="flex items-center gap-2">
-          <span className="text-body-md">Viewing</span>
+          <span className="text-body-md">Đang xem</span>
           <div className="min-w-14.5">
             <BasicSelect
               options={pageSizeOptions}
@@ -98,7 +98,7 @@ export function TablePagination({
               size="pagination-sm"
             />
           </div>
-          <span className="text-body-md">Rows per page</span>
+          <span className="text-body-md">hàng mỗi trang.</span>
         </div>
       )}
 

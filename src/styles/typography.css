@@ -1,0 +1,96 @@
+/* =================================================================
+   TYPOGRAPHY DEFINITIONS
+   ================================================================= */
+
+@theme inline {
+  /* Display text sizes */
+  --text-display-L: 4.5rem; /* 72px */
+  --text-display-L--line-height: 5.625rem; /* 90px */
+  --text-display-M: 4rem; /* 64px */
+  --text-display-M--line-height: 5rem; /* 80px */
+  --text-display-S: 3.25rem; /* 52px */
+  --text-display-S--line-height: 4rem; /* 64px */
+
+  /* Heading sizes */
+  --text-heading-L: 3rem; /* 48px */
+  --text-heading-L--line-height: 3.75rem; /* 60px */
+  --text-heading-M: 2.5rem; /* 40px */
+  --text-heading-M--line-height: 3.25rem; /* 52px */
+  --text-heading-S: 2rem; /* 32px */
+  --text-heading-S--line-height: 3rem; /* 48px */
+  --text-heading-XS: 1.125rem; /* 18px */
+  --text-heading-XS--line-height: 1.75rem; /* 28px */
+
+  /* Title sizes */
+  --text-title-L: 1.75rem; /* 28px */
+  --text-title-L--line-height: 2.5rem; /* 40px */
+  --text-title-M: 1.5rem; /* 24px */
+  --text-title-M--line-height: 2.25rem; /* 36px */
+  --text-title-S: 1.25rem; /* 20px */
+  --text-title-S--line-height: 2rem; /* 32px */
+
+  /* Body text sizes */
+  --text-body-XL: 1.125rem; /* 18px */
+  --text-body-XL--line-height: 1.75rem; /* 28px */
+  --text-body-L: 1rem; /* 16px */
+  --text-body-L--line-height: 1.5rem; /* 24px */
+  --text-body-M: 0.875rem; /* 14px */
+  --text-body-M--line-height: 1.25rem; /* 20px */
+  --text-body-S: 0.75rem; /* 12px */
+  --text-body-S--line-height: 1rem; /* 16px */
+
+  /* Label sizes */
+  --text-label-XL: 1rem; /* 16px */
+  --text-label-XL--line-height: 1.5rem; /* 24px */
+  --text-label-L: 0.875rem; /* 14px */
+  --text-label-L--line-height: 1.25rem; /* 20px */
+  --text-label-M: 0.75rem; /* 12px */
+  --text-label-M--line-height: 1rem; /* 16px */
+  --text-label-S: 0.625rem; /* 10px */
+  --text-label-S--line-height: 0.75rem; /* 12px */
+
+  /* Token aliases from token.css (L758-L792) */
+  --text-display-lg: 4.5rem; /* 72px */
+  --text-display-lg--line-height: 5.625rem; /* 90px */
+  --text-display-lg-font-weight: 900;
+  --text-display-md: 4rem; /* 64px */
+  --text-display-md--line-height: 5rem; /* 80px */
+  --text-display-md-font-weight: 900;
+  --text-display-sm: 3.25rem; /* 52px */
+  --text-display-sm--line-height: 4rem; /* 64px */
+  --text-display-sm-font-weight: 900;
+  --text-heading-lg: 3rem; /* 48px */
+  --text-heading-lg--line-height: 3.75rem; /* 60px */
+  --text-heading-lg-font-weight: 700;
+  --text-heading-md-font-size: 2.5rem; /* 40px */
+  --text-heading-md--line-height: 3.25rem; /* 52px */
+  --text-heading-md-font-weight: 700;
+  --text-heading-sm: 2rem; /* 32px */
+  --text-heading-sm--line-height: 3rem; /* 48px */
+  --text-heading-sm-font-weight: 700;
+  --text-tittle-lg-font-size: 1.75rem; /* 28px */
+  --text-tittle-lg--line-height: 2.5rem; /* 40px */
+  --text-tittle-lg-font-weight: 700;
+  --text-tittle-md: 1.5rem; /* 24px */
+  --text-tittle-md--line-height: 2.25rem; /* 36px */
+  --text-tittle-md-font-weight: 700;
+  --text-tittle-sm: 1.25rem; /* 20px */
+  --text-tittle-sm--line-height: 2rem; /* 32px */
+  --text-tittle-sm-font-weight: 700;
+  --text-body-xl: 1.125rem; /* 18px */
+  --text-body-xl--line-height: 1.75rem; /* 28px */
+  --text-body-lg: 1rem; /* 16px */
+  --text-body-lg--line-height: 1.5rem; /* 24px */
+  --text-body-md: 0.875rem; /* 14px */
+  --text-body-md--line-height: 1.25rem; /* 20px */
+  --text-body-sm: 0.75rem; /* 12px */
+  --text-body-sm--line-height: 1rem; /* 16px */
+  --text-label-xl: 1rem; /* 16px */
+  --text-label-xl--line-height: 1.5rem; /* 24px */
+  --text-label-lg: 0.875rem; /* 14px */
+  --text-label-lg--line-height: 1.25rem; /* 20px */
+  --text-label-md: 0.75rem; /* 12px */
+  --text-label-md--line-height: 1rem; /* 16px */
+  --text-label-sm: 0.625rem; /* 10px */
+  --text-label-sm--line-height: 0.75rem; /* 12px */
+}
