@@ -9,3 +9,8 @@ export const getUserInfoAPI = async () => {
   const response = await axiosInstance.get("/v2/admins")
   return response.data
 }
+
+export const getDashboardAPI = async () => {
+  const response = await axiosInstance.get("/v2/admins/dashboard")
+  return response.data
+}

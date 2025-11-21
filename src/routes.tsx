@@ -46,7 +46,7 @@ export const routes: AppRoute[] = [
     loader: dashboardLoader,
     children: [
       { path: "/dashboard", element: <Home /> },
-      { path: "/profile", element: <UserProfiles /> },
+      { path: "/user", element: <UserProfiles /> },
       { path: "/calendar", element: <Calendar /> },
       { path: "/blank", element: <Blank /> },
       { path: "/form-elements", element: <FormElements /> },

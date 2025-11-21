@@ -20,7 +20,7 @@ const refreshAccessToken = async () => {
   const refreshToken = Cookies.get("refreshAdminToken")
   if (!refreshToken) throw new Error("No refresh token")
 
-  const response = await axios.post(`${API_ROOT}/v1/admins/refreshToken`, { refreshToken })
+  const response = await axios.post(`${API_ROOT}/v2/admins/refreshToken`, { refreshToken })
   const newAccessToken = response.data?.accessToken
   if (newAccessToken) {
     document.cookie = `accessAdminToken=${newAccessToken}; path=/; max-age=${60 * 60}`
