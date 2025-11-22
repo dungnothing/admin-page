@@ -1,7 +1,7 @@
 import { getDashboardAPI } from "@/apis/admin"
-import EcommerceMetrics from "../../components/ecommerce/EcommerceMetrics"
-import MonthlySalesChart from "../../components/ecommerce/MonthlySalesChart"
-import StatisticsChart from "../../components/ecommerce/StatisticsChart"
+import EcommerceMetrics from "@/components/main-page/ecommerce/EcommerceMetrics"
+import MonthlySalesChart from "@/components/main-page/ecommerce/MonthlySalesChart"
+import StatisticsChart from "@/components/main-page/ecommerce/StatisticsChart"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 

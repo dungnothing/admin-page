@@ -15,6 +15,8 @@ import Videos from "./pages/UiElements/Videos"
 import LineChart from "./pages/Charts/LineChart"
 import BarChart from "./pages/Charts/BarChart"
 import SignIn from "./pages/AuthPages/SignIn"
+import EditUser from "./components/main-page/user/EditUser"
+import UpdateSubcription from "./components/main-page/user/UpdateSubcription"
 import NotFound from "./pages/OtherPage/NotFound"
 import { Navigate, redirect } from "react-router-dom"
 import { isAuthenticated } from "./utils/auth"
@@ -43,10 +45,17 @@ const dashboardLoader = () => {
 export const routes: AppRoute[] = [
   {
     element: <AppLayout />,
-    loader: dashboardLoader,
+    // loader: dashboardLoader,
     children: [
       { path: "/dashboard", element: <Home /> },
-      { path: "/user", element: <UserList /> },
+      {
+        path: "/user",
+        element: <UserList />,
+        children: [
+          { path: ":id/edit", element: <EditUser /> },
+          { path: ":id/subscription", element: <UpdateSubcription /> },
+        ],
+      },
       { path: "/calendar", element: <Calendar /> },
       { path: "/blank", element: <Blank /> },
       { path: "/form-elements", element: <FormElements /> },

@@ -1,23 +1,55 @@
 import SearchInput from "@/components/common/basic/SearchInput"
-import Label from "../form/Label"
+import Label from "@/components/form/Label"
 import { useState, useEffect } from "react"
-import BasicTable from "../tables/BasicTable"
+import BasicTable from "@/components/common/basic/tables/BasicTable"
 import { getUserAPI } from "@/apis/admin"
 import { useDebounce } from "@/hooks/useDebounce"
 import dayjs from "dayjs"
+import MoreAction from "@/components/ui/dropdown/MoreAction"
+import { toast } from "react-toastify"
+import { DropdownItem } from "@/components/ui/dropdown/DropdownItem"
+import { useNavigate } from "react-router-dom"
 
 const UserTable = () => {
-  const [userList, setUserList] = useState([])
+  const [userList, setUserList] = useState<any>()
   const [filter, setFilter] = useState<any>({
     page: 0,
     size: 20,
     term: "",
   })
   const debouncedSearchValue = useDebounce(filter.term)
+  const navigate = useNavigate()
 
   const fetchUserList = async () => {
-    const response = await getUserAPI({ page: filter.page + 1, size: filter.size, term: debouncedSearchValue })
-    setUserList(response)
+    try {
+      // const response = await getUserAPI({ page: filter.page + 1, size: filter.size, term: debouncedSearchValue })
+      const response = [
+        {
+          id: 1,
+          userName: "Nguyễn Văn A",
+          email: "nguyenvana@gmail.com",
+          phone: "0123456789",
+          createdAt: "2022-01-01",
+        },
+        {
+          id: 2,
+          userName: "Nguyễn Văn B",
+          email: "nguyenvanb@gmail.com",
+          phone: "0123456789",
+          createdAt: "2022-01-01",
+        },
+        {
+          id: 3,
+          userName: "Nguyễn Văn C",
+          email: "nguyenvanc@gmail.com",
+          phone: "0123456789",
+          createdAt: "2022-01-01",
+        },
+      ]
+      setUserList(response)
+    } catch (error) {
+      toast.error("Lỗi khi tải dữ liệu")
+    }
   }
 
   useEffect(() => {
@@ -58,6 +90,30 @@ const UserTable = () => {
       align: "left" as const,
       render: (info: any) => <div>{dayjs(info.createdAt).format("HH:mm - DD/MM/YYYY ")}</div>,
     },
+    {
+      id: "action",
+      width: "48px",
+      align: "center" as const,
+      render: (info: any) => (
+        <MoreAction>
+          <DropdownItem
+            onClick={() => {
+              navigate(`${info.id}/edit`)
+            }}
+          >
+            Chỉnh sửa
+          </DropdownItem>
+          <DropdownItem
+            onClick={() => {
+              navigate(`${info.id}/subscription`)
+            }}
+          >
+            Nâng cấp gói
+          </DropdownItem>
+          <DropdownItem>Item 3</DropdownItem>
+        </MoreAction>
+      ),
+    },
   ]
 
   return (
@@ -72,7 +128,7 @@ const UserTable = () => {
       </div>
       <BasicTable
         columns={columns}
-        data={userList}
+        data={userList || []}
         pagination={true}
         total={userList?.length || 0}
         page={filter.page}

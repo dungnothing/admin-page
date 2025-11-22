@@ -1,12 +1,12 @@
 import { useState } from "react"
-import { EyeCloseIcon, EyeIcon } from "../../icons"
-import Label from "../form/Label"
-import Button from "../ui/button/Button"
+import { EyeCloseIcon, EyeIcon } from "../../../icons"
+import Label from "../../form/Label"
+import Button from "../../ui/button/Button"
 import * as v from "valibot"
 import { useForm } from "react-hook-form"
 import { valibotResolver } from "@hookform/resolvers/valibot"
 import FormProvider from "@/components/common/hook-form/FormProvider"
-import { RHFInput } from "../common/hook-form/RHFInput"
+import { RHFInput } from "../../common/hook-form/RHFInput"
 import { loginAPI } from "@/apis/admin"
 import { toast } from "react-toastify"
 import { userStore } from "@/stores/index"
@@ -96,8 +96,9 @@ export default function SignInForm() {
                 </div>
                 <div>
                   <Button className="w-full" size="sm">
-                    Sign in
+                    Đăng nhập
                   </Button>
+                  <Button onClick={() => navigate("/dashboard")}>Vào luôn</Button>
                 </div>
               </div>
             </div>

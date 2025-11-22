@@ -1,5 +1,6 @@
 import PageBreadcrumb from "../components/common/PageBreadCrumb"
-import UserTable from "../components/user/UserTable"
+import UserTable from "../components/main-page/user/UserTable"
+import { Outlet } from "react-router-dom"
 
 export default function UserProfiles() {
   return (
@@ -10,6 +11,7 @@ export default function UserProfiles() {
         <div className="space-y-6">
           <UserTable />
         </div>
+        <Outlet />
       </div>
     </>
   )

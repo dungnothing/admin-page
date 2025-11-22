@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { BasicSelect, SelectOption } from "@/components/common/BasicSelect"
+import { BasicSelect, SelectOption } from "@/components/common/basic/BasicSelect"
 import { ChevronLeft, ChevronRight, Ellipsis } from "lucide-react"
 
 interface TablePaginationProps {
