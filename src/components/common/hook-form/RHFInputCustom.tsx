@@ -3,7 +3,7 @@ import { Eye, EyeClosed } from "lucide-react"
 import { useState } from "react"
 import { clsx } from "clsx"
 
-const RHFInputCustom = ({ name, label, type = "text", disabled, maxWidth }: any) => {
+const RHFInputCustom = ({ name, label, type = "text", disabled, maxWidth, required }: any) => {
   const { control } = useFormContext()
   const [showPassword, setShowPassword] = useState(false)
   const inputType = type === "password" ? (showPassword ? "text" : "password") : "text"
@@ -43,6 +43,7 @@ const RHFInputCustom = ({ name, label, type = "text", disabled, maxWidth }: any)
             `}
           >
             {label}
+            {required && <span className="text-red-500 pl-2">*</span>}
           </label>
 
           {type === "password" && (

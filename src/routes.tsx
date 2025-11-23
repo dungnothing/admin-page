@@ -20,6 +20,7 @@ import UpdateSubcription from "./components/main-page/user/UpdateSubcription"
 import NotFound from "./pages/OtherPage/NotFound"
 import { Navigate, redirect } from "react-router-dom"
 import { isAuthenticated } from "./utils/auth"
+import CreateUser from "./components/main-page/user/CreateUser"
 
 export interface AppRoute {
   path?: string
@@ -54,6 +55,7 @@ export const routes: AppRoute[] = [
         children: [
           { path: ":id/edit", element: <EditUser /> },
           { path: ":id/subscription", element: <UpdateSubcription /> },
+          { path: "create", element: <CreateUser /> },
         ],
       },
       { path: "/calendar", element: <Calendar /> },

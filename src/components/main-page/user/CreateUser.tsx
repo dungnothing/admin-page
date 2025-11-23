@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button"
 
 const schema = v.object({
   userName: v.pipe(v.string(), v.nonEmpty("Tên người dùng là bắt buộc"), v.minLength(3), v.maxLength(30)),
+  email: v.pipe(v.string(), v.email("Email không hợp lệ"), v.nonEmpty("Email là bắt buộc")),
+  password: v.pipe(v.string(), v.nonEmpty("Mật khẩu là bắt buộc"), v.minLength(6), v.maxLength(30)),
   address: v.string(),
   phone: v.custom((value: any) => {
     if (!value) return true
@@ -19,7 +21,7 @@ const schema = v.object({
   organization: v.string(),
 })
 
-const EditUser = () => {
+const CreateUser = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
@@ -34,8 +36,11 @@ const EditUser = () => {
 
   const form = useForm({
     resolver: valibotResolver(schema),
+    mode: "all",
     defaultValues: {
       userName: "",
+      email: "",
+      password: "",
       address: "",
       phone: "",
       organization: "",
@@ -43,10 +48,12 @@ const EditUser = () => {
   })
 
   return (
-    <BasicDialog open={true} onOpenChange={handleClose} title="Thông tin người dùng">
+    <BasicDialog open={true} onOpenChange={handleClose} title="Tạo mới người dùng">
       <FormProvider methods={form} onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-6">
-          <RHFInputCustom name="userName" label="Tên người dùng" />
+          <RHFInputCustom name="userName" label="Tên người dùng" required />
+          <RHFInputCustom name="email" label="Email" required />
+          <RHFInputCustom name="password" label="Mật khẩu" required />
           <RHFInputCustom name="address" label="Địa chỉ" />
           <RHFInputCustom name="phone" label="Số điện thoại" />
           <RHFInputCustom name="organization" label="Tổ chức" />
@@ -54,7 +61,9 @@ const EditUser = () => {
             <Button variant="secondary-outline" color="gray" onClick={handleClose}>
               Hủy
             </Button>
-            <Button type="submit">Lưu thay đổi</Button>
+            <Button type="submit" disabled={!form.formState.isValid}>
+              Lưu
+            </Button>
           </div>
         </div>
       </FormProvider>
@@ -62,4 +71,4 @@ const EditUser = () => {
   )
 }
 
-export default EditUser
+export default CreateUser

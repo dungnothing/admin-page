@@ -9,6 +9,8 @@ import MoreAction from "@/components/ui/dropdown/MoreAction"
 import { toast } from "react-toastify"
 import { DropdownItem } from "@/components/ui/dropdown/DropdownItem"
 import { useNavigate } from "react-router-dom"
+import BasicDialog from "@/components/common/basic/BasicDialog"
+import { Button } from "@/components/ui/button"
 
 const UserTable = () => {
   const [userList, setUserList] = useState<any>()
@@ -19,6 +21,8 @@ const UserTable = () => {
   })
   const debouncedSearchValue = useDebounce(filter.term)
   const navigate = useNavigate()
+  const [id, setId] = useState<any>()
+  const [openDelete, setOpenDelete] = useState(false)
 
   const fetchUserList = async () => {
     try {
@@ -101,7 +105,7 @@ const UserTable = () => {
               navigate(`${info.id}/edit`)
             }}
           >
-            Chỉnh sửa
+            Xem thông tin
           </DropdownItem>
           <DropdownItem
             onClick={() => {
@@ -110,11 +114,26 @@ const UserTable = () => {
           >
             Nâng cấp gói
           </DropdownItem>
-          <DropdownItem>Item 3</DropdownItem>
+          <DropdownItem
+            onClick={() => {
+              setId(info.id)
+              setOpenDelete(true)
+            }}
+          >
+            Xóa người dùng
+          </DropdownItem>
         </MoreAction>
       ),
     },
   ]
+
+  const handleDelete = () => {
+    try {
+      console.log(id)
+    } catch (error) {
+      toast.error("Lỗi khi xóa người dùng")
+    }
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -136,6 +155,17 @@ const UserTable = () => {
         onPageChange={setFilter}
         onPageSizeChange={(size: any) => setFilter({ ...filter, size: size })}
       />
+      <BasicDialog open={openDelete} onOpenChange={setOpenDelete} title="Xóa người dùng">
+        <p>Bạn có chắc chắn muốn xóa người dùng này?</p>
+        <div className="flex justify-end gap-2">
+          <Button variant="secondary-outline" color="gray" onClick={() => setOpenDelete(false)}>
+            Hủy
+          </Button>
+          <Button onClick={handleDelete} variant="primary" color="hi-warning">
+            Xóa
+          </Button>
+        </div>
+      </BasicDialog>
     </div>
   )
 }
