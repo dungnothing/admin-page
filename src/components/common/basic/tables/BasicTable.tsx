@@ -45,12 +45,16 @@ const BasicTable = ({
         }}
       >
         <TableHeader className="bg-gray-secondary rounded-md">
-          <TableRow className="rounded-md border-none">
+          <TableRow className="rounded-md border-none hover:bg-transparent dark:hover:bg-transparent">
             {columns.map((column, index) => (
               <TableHead
                 key={column.id}
                 align={column.align || "left"}
-                className={cn(index === 0 && "rounded-l-md", index === columns.length - 1 && "rounded-r-md")}
+                className={cn(
+                  index === 0 && "rounded-l-md",
+                  index === columns.length - 1 && "rounded-r-md ",
+                  "dark:bg-[#5459AC]",
+                )}
                 style={{
                   minWidth: column.minWidth,
                   maxWidth: column.maxWidth,
@@ -66,7 +70,9 @@ const BasicTable = ({
                   {typeof column.labelRender === "function" ? (
                     column.labelRender()
                   ) : (
-                    <div className="text-body-M font-semibold text-text-tertiary">{column.label}</div>
+                    <div className="text-body-M font-semibold text-text-tertiary dark:text-gray-200">
+                      {column.label}
+                    </div>
                   )}
                 </div>
               </TableHead>
@@ -75,12 +81,15 @@ const BasicTable = ({
         </TableHeader>
         <TableBody>
           {data.map((row, index) => (
-            <TableRow key={row.id || row._id || index}>
+            <TableRow
+              key={row.id || row._id || index}
+              className="hover:bg-gray-50 dark:hover:bg-white/[0.03] border-b border-gray-100 dark:border-white/[0.05]"
+            >
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
                   className={cn(
-                    "font-medium border-b",
+                    "font-medium",
                     column.verticalAlign === "top" && "align-top",
                     "overflow-hidden",
                     column.verticalAlign === "top" && "!whitespace-normal",
@@ -101,7 +110,7 @@ const BasicTable = ({
                     )}
                   >
                     {column.id === "index" ? (
-                      <p className="text-body-M text-text-tertiary">
+                      <p className="text-body-M text-text-tertiary dark:text-gray-400">
                         {page ? (page - 1) * (pageSize || 10) + index + 1 : index + 1}
                       </p>
                     ) : (
@@ -109,7 +118,7 @@ const BasicTable = ({
                         {typeof column.render === "function" ? (
                           column.render(row)
                         ) : (
-                          <p className="text-label-lg text-primary font-normal">{row[column.id]}</p>
+                          <p className="text-label-lg text-primary font-normal dark:text-gray-200">{row[column.id]}</p>
                         )}
                       </>
                     )}

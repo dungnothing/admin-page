@@ -12,8 +12,8 @@ import { useNavigate } from "react-router-dom"
 import BasicDialog from "@/components/common/basic/BasicDialog"
 import { Button } from "@/components/ui/button"
 
-const UserTable = () => {
-  const [userList, setUserList] = useState<any>()
+const Board = () => {
+  const [boardList, setBoardList] = useState<any>()
   const [filter, setFilter] = useState<any>({
     page: 0,
     size: 20,
@@ -24,17 +24,17 @@ const UserTable = () => {
   const [id, setId] = useState<any>()
   const [openDelete, setOpenDelete] = useState(false)
 
-  const fetchUserList = async () => {
+  const fetchBoardList = async () => {
     try {
       const response = await getUserAPI({ page: filter.page + 1, size: filter.size, term: debouncedSearchValue })
-      setUserList(response)
+      setBoardList(response)
     } catch (error) {
       toast.error("Lỗi khi tải dữ liệu")
     }
   }
 
   useEffect(() => {
-    fetchUserList()
+    fetchBoardList()
   }, [filter.page, filter.size, debouncedSearchValue])
 
   const columns = [
@@ -43,28 +43,31 @@ const UserTable = () => {
       label: "STT",
       width: "48px",
       align: "center",
-      labelRender: () => <div className="w-full text-center text-text-tertiary font-semibold">STT</div>,
     },
     {
-      id: "fullName",
-      label: "Tên người dùng",
+      id: "name",
+      label: "Tên bảng",
       width: "240px",
       align: "left" as const,
-      render: (info: any) => <div className="w-full text-brand-primary ">{info.userName}</div>,
+      render: (info: any) => <div className="w-full text-brand-primary ">{info.name}</div>,
     },
     {
-      id: "email",
-      label: "Email",
+      id: "owner",
+      label: "Chủ sở hữu",
       width: "240px",
       align: "left" as const,
     },
     {
-      id: "phone",
-      label: "Số điện thoại",
+      id: "columnCount",
+      label: "Số lượng cột",
       width: "240px",
       align: "left" as const,
-      render: (info: any) => <div className="w-full text-center">{info.phone || "--"}</div>,
-      labelRender: () => <div className="w-full text-center">Số điện thoại</div>,
+    },
+    {
+      id: "cardCount",
+      label: "Số lượng thẻ",
+      width: "240px",
+      align: "left" as const,
     },
     {
       id: "createdAt",
@@ -81,25 +84,25 @@ const UserTable = () => {
         <MoreAction>
           <DropdownItem
             onClick={() => {
-              navigate(`${info._id}/edit`)
+              navigate(`${info._id}/detail`)
             }}
           >
             Xem thông tin
           </DropdownItem>
           <DropdownItem
             onClick={() => {
-              navigate(`${info._id}/subscription`)
+              navigate(`${info._id}/user-manager`)
             }}
           >
-            Nâng cấp gói
+            Quản lý thành viên
           </DropdownItem>
           <DropdownItem
             onClick={() => {
-              setId(info._id)
+              setId(info.id)
               setOpenDelete(true)
             }}
           >
-            Xóa người dùng
+            Xóa bảng
           </DropdownItem>
         </MoreAction>
       ),
@@ -110,7 +113,7 @@ const UserTable = () => {
     try {
       console.log(id)
     } catch (error) {
-      toast.error("Lỗi khi xóa người dùng")
+      toast.error("Lỗi khi xóa bảng")
     }
   }
 
@@ -121,21 +124,21 @@ const UserTable = () => {
         <SearchInput
           searchValue={filter.term}
           setSearchValue={(value) => setFilter({ ...filter, term: value })}
-          placeholder="Tìm kiếm người dùng"
+          placeholder="Tìm kiếm bảng"
         />
       </div>
       <BasicTable
         columns={columns}
-        data={userList?.data || []}
-        pagination={true}
-        total={userList?.total || 0}
-        page={filter.page}
+        data={boardList?.data || []}
+        pagination
+        total={boardList?.total || 0}
+        page={filter.page + 1}
         pageSize={filter.size}
         onPageChange={setFilter}
         onPageSizeChange={(size: any) => setFilter({ ...filter, size: size })}
       />
-      <BasicDialog open={openDelete} onOpenChange={setOpenDelete} title="Xóa người dùng">
-        <p>Bạn có chắc chắn muốn xóa người dùng này?</p>
+      <BasicDialog open={openDelete} onOpenChange={setOpenDelete} title="Xóa bảng">
+        <p>Bạn có chắc chắn muốn xóa bảng này?</p>
         <div className="flex justify-end gap-2">
           <Button variant="secondary-outline" color="gray" onClick={() => setOpenDelete(false)}>
             Hủy
@@ -149,4 +152,4 @@ const UserTable = () => {
   )
 }
 
-export default UserTable
+export default Board

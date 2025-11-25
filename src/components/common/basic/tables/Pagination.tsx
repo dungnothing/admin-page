@@ -103,16 +103,16 @@ export function TablePagination({
       )}
 
       {showPagination && total > 0 && (
-        <div className="flex items-center justify-center border border-gray-200 rounded-md overflow-hidden">
+        <div className="flex items-center justify-center border border-gray-200 dark:border-gray-700 rounded-md overflow-hidden">
           {/* Previous button */}
           <button
             onClick={() => handlePageChange(page - 1)}
             disabled={page <= 1}
-            className="h-10 w-10 flex items-center justify-center border-r border-gray-200 text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+            className="h-10 w-10 flex items-center justify-center border-r border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/[0.03] disabled:opacity-50 disabled:pointer-events-none"
             aria-label="Previous page"
             tabIndex={0}
           >
-            <ChevronLeft color="var(--color-gray-09)" width={20} height={20} />
+            <ChevronLeft width={20} height={20} />
           </button>
 
           {/* Page numbers */}
@@ -125,7 +125,7 @@ export function TablePagination({
                     aria-label="Jump to intermediate pages"
                     tabIndex={0}
                   >
-                    <Ellipsis color="var(--color-gray-03)" width={16} height={16} />
+                    <Ellipsis className="text-gray-400 dark:text-gray-500" width={16} height={16} />
                   </div>
                 </div>
               )
@@ -142,6 +142,7 @@ export function TablePagination({
                   aria-label={`Page ${pageNumber}`}
                   aria-current={isActive ? "page" : undefined}
                   tabIndex={0}
+                  className={!isActive ? "dark:text-gray-300 dark:hover:bg-white/[0.03]" : ""}
                 >
                   {pageNumber}
                 </Button>
@@ -153,11 +154,11 @@ export function TablePagination({
           <button
             onClick={() => handlePageChange(page + 1)}
             disabled={page >= totalPages}
-            className="h-10 w-10 flex items-center justify-center border-l border-gray-200 text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+            className="h-10 w-10 flex items-center justify-center border-l border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/[0.03] disabled:opacity-50 disabled:pointer-events-none"
             aria-label="Next page"
             tabIndex={0}
           >
-            <ChevronRight color="var(--color-gray-09)" width={20} height={20} />
+            <ChevronRight width={20} height={20} />
           </button>
         </div>
       )}

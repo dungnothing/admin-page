@@ -98,7 +98,7 @@ export default function SignInForm() {
                   <Button className="w-full" size="sm">
                     Đăng nhập
                   </Button>
-                  <Button onClick={() => navigate("/dashboard")}>Vào luôn</Button>
+                  {/* <Button onClick={() => navigate("/dashboard")}>Vào luôn</Button> */}
                 </div>
               </div>
             </div>
