@@ -1,8 +1,11 @@
 import BasicDialog from "@/components/common/basic/BasicDialog"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 
 const UserManager = () => {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const id = searchParams.get("id")
+
   const handleClose = () => {
     navigate("/board")
   }

@@ -6,30 +6,41 @@ import * as v from "valibot"
 import { valibotResolver } from "@hookform/resolvers/valibot"
 import RHFInputCustom from "@/components/common/hook-form/RHFInputCustom"
 import { Button } from "@/components/ui/button"
+import { createAdminAPI } from "@/apis/admin"
+import { toast } from "react-toastify"
 
 const schema = v.object({
-  userName: v.pipe(v.string(), v.nonEmpty("Tên người dùng là bắt buộc"), v.minLength(3), v.maxLength(30)),
+  userName: v.pipe(
+    v.string(),
+    v.nonEmpty("Tên admin là bắt buộc"),
+    v.minLength(3, "Tối thiểu 3 ký tự"),
+    v.maxLength(30),
+    v.regex(/^[a-zA-Z0-9_-]+$/, "Không được ký tự đặc biệt"),
+  ),
   email: v.pipe(v.string(), v.email("Email không hợp lệ"), v.nonEmpty("Email là bắt buộc")),
-  password: v.pipe(v.string(), v.nonEmpty("Mật khẩu là bắt buộc"), v.minLength(6), v.maxLength(30)),
-  address: v.string(),
-  phone: v.custom((value: any) => {
-    if (!value) return true
-
-    const vnPhoneRegex = /^(0|\+84)(3|5|7|8|9)\d{8}$/
-    return vnPhoneRegex.test(value)
-  }, "Số điện thoại không hợp lệ"),
-  organization: v.string(),
+  password: v.pipe(
+    v.string(),
+    v.nonEmpty("Mật khẩu là bắt buộc"),
+    v.minLength(6, "Tối thiểu 6 ký tự"),
+    v.maxLength(30),
+  ),
 })
 
-const CreateUser = () => {
+const CreateAdmin = () => {
   const navigate = useNavigate()
 
   const handleClose = () => {
-    navigate("/user")
+    navigate("/admin")
   }
 
-  const onSubmit = (data: any) => {
-    console.log(data)
+  const onSubmit = async (data: any) => {
+    try {
+      await createAdminAPI(data)
+      toast.success("Tạo admin thành công")
+      navigate("/admin")
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Lỗi khi tạo admin")
+    }
   }
 
   const form = useForm({
@@ -39,27 +50,21 @@ const CreateUser = () => {
       userName: "",
       email: "",
       password: "",
-      address: "",
-      phone: "",
-      organization: "",
     },
   })
 
   return (
-    <BasicDialog open={true} onOpenChange={handleClose} title="Tạo mới người dùng">
+    <BasicDialog open={true} onOpenChange={handleClose} title="Tạo mới Admin">
       <FormProvider methods={form} onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-6">
-          <RHFInputCustom name="userName" label="Tên người dùng" required />
+          <RHFInputCustom name="userName" label="Tên Admin" required />
           <RHFInputCustom name="email" label="Email" required />
-          <RHFInputCustom name="password" label="Mật khẩu" required />
-          <RHFInputCustom name="address" label="Địa chỉ" />
-          <RHFInputCustom name="phone" label="Số điện thoại" />
-          <RHFInputCustom name="organization" label="Tổ chức" />
+          <RHFInputCustom name="password" label="Mật khẩu" type="password" required />
           <div className="flex justify-end gap-2">
             <Button variant="secondary-outline" color="gray" onClick={handleClose}>
               Hủy
             </Button>
-            <Button type="submit" disabled={!form.formState.isValid}>
+            <Button type="submit" disabled={!form.formState.isValid || form.formState.isSubmitting}>
               Lưu
             </Button>
           </div>
@@ -69,4 +74,4 @@ const CreateUser = () => {
   )
 }
 
-export default CreateUser
+export default CreateAdmin

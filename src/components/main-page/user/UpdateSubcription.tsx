@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import BasicDialog from "@/components/common/basic/BasicDialog"
 import { toast } from "react-toastify"
 import { BasicSelect } from "@/components/common/basic/BasicSelect"
@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button"
 import { useState } from "react"
 
 const UpdateSubcription = () => {
-  const { id } = useParams()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const id = searchParams.get("id")
   const current = "PRO"
   const [selected, setSelected] = useState<any>("PRO")
 

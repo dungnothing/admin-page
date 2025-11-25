@@ -70,7 +70,14 @@ const BasicTable = ({
                   {typeof column.labelRender === "function" ? (
                     column.labelRender()
                   ) : (
-                    <div className="text-body-M font-semibold text-text-tertiary dark:text-gray-200">
+                    <div
+                      className={cn(
+                        "text-body-M font-semibold text-text-tertiary dark:text-gray-200 w-full",
+                        column.align === "center" && "text-center",
+                        column.align === "right" && "text-right",
+                        column.align === "left" && "text-left",
+                      )}
+                    >
                       {column.label}
                     </div>
                   )}

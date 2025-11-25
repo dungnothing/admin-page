@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import BasicDialog from "@/components/common/basic/BasicDialog"
 import FormProvider from "@/components/common/hook-form/FormProvider"
 import { useForm } from "react-hook-form"
@@ -20,8 +20,9 @@ const schema = v.object({
 })
 
 const EditUser = () => {
-  const { id } = useParams()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const id = searchParams.get("id")
 
   const handleClose = () => {
     navigate("/user")

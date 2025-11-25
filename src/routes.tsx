@@ -4,14 +4,9 @@ import Home from "./pages/Dashboard/Home"
 import UserList from "./pages/UserList"
 import BasicTables from "./pages/Tables/BasicTables"
 import SignIn from "./pages/AuthPages/SignIn"
-import EditUser from "./components/main-page/user/EditUser"
-import UpdateSubcription from "./components/main-page/user/UpdateSubcription"
 import NotFound from "./pages/OtherPage/NotFound"
 import { Navigate, redirect } from "react-router-dom"
 import { isAuthenticated } from "./utils/auth"
-import CreateUser from "./components/main-page/user/CreateUser"
-import BoardDetail from "./components/main-page/board/BoardDetail"
-import UserManager from "./components/main-page/board/UserManager"
 import AdminPage from "./pages/Admin/AdminPage"
 
 export interface AppRoute {
@@ -41,24 +36,9 @@ export const routes: AppRoute[] = [
     loader: dashboardLoader,
     children: [
       { path: "/dashboard", element: <Home /> },
-      {
-        path: "/user",
-        element: <UserList />,
-        children: [
-          { path: ":id/edit", element: <EditUser /> },
-          { path: ":id/subscription", element: <UpdateSubcription /> },
-          { path: "create", element: <CreateUser /> },
-        ],
-      },
-      {
-        path: "/board",
-        element: <BasicTables />,
-        children: [
-          { path: ":id/detail", element: <BoardDetail /> },
-          { path: ":id/user-manager", element: <UserManager /> },
-        ],
-      },
-      { path: "/admin", element: <AdminPage />, children: [{ path: "create", element: <CreateUser /> }] },
+      { path: "/user", element: <UserList /> },
+      { path: "/board", element: <BasicTables /> },
+      { path: "/admin", element: <AdminPage /> },
     ],
   },
   { path: "/signin", element: <SignIn />, loader: loginLoader },

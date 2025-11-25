@@ -2,7 +2,7 @@ import SearchInput from "@/components/common/basic/SearchInput"
 import Label from "@/components/form/Label"
 import { useState, useEffect } from "react"
 import BasicTable from "@/components/common/basic/tables/BasicTable"
-import { getUserAPI } from "@/apis/admin"
+import { getBoardAPI } from "@/apis/admin"
 import { useDebounce } from "@/hooks/useDebounce"
 import dayjs from "dayjs"
 import MoreAction from "@/components/ui/dropdown/MoreAction"
@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button"
 const Board = () => {
   const [boardList, setBoardList] = useState<any>()
   const [filter, setFilter] = useState<any>({
-    page: 0,
+    page: 1,
     size: 20,
     term: "",
   })
@@ -26,7 +26,7 @@ const Board = () => {
 
   const fetchBoardList = async () => {
     try {
-      const response = await getUserAPI({ page: filter.page + 1, size: filter.size, term: debouncedSearchValue })
+      const response = await getBoardAPI({ page: filter.page, size: filter.size, term: debouncedSearchValue })
       setBoardList(response)
     } catch (error) {
       toast.error("Lỗi khi tải dữ liệu")
@@ -45,29 +45,38 @@ const Board = () => {
       align: "center",
     },
     {
-      id: "name",
+      id: "title",
       label: "Tên bảng",
       width: "240px",
       align: "left" as const,
-      render: (info: any) => <div className="w-full text-brand-primary ">{info.name}</div>,
+      render: (info: any) => <div className="w-full text-brand-primary ">{info.title}</div>,
     },
     {
       id: "owner",
       label: "Chủ sở hữu",
-      width: "240px",
+      width: "150px",
       align: "left" as const,
     },
     {
-      id: "columnCount",
+      id: "columnsCount",
       label: "Số lượng cột",
-      width: "240px",
-      align: "left" as const,
+      width: "120px",
+      align: "center" as const,
+      render: (info: any) => <div className="w-full text-center">{info.columnsCount}</div>,
     },
     {
-      id: "cardCount",
+      id: "cardsCount",
       label: "Số lượng thẻ",
-      width: "240px",
-      align: "left" as const,
+      width: "120px",
+      align: "center" as const,
+      render: (info: any) => <div className="w-full text-center">{info.cardsCount}</div>,
+    },
+    {
+      id: "memberCount",
+      label: "SL thành viên",
+      width: "120px",
+      align: "center" as const,
+      render: (info: any) => <div className="w-full text-center">{info.memberCount}</div>,
     },
     {
       id: "createdAt",
@@ -84,14 +93,14 @@ const Board = () => {
         <MoreAction>
           <DropdownItem
             onClick={() => {
-              navigate(`${info._id}/detail`)
+              navigate(`/board?action=detail&id=${info._id}`)
             }}
           >
             Xem thông tin
           </DropdownItem>
           <DropdownItem
             onClick={() => {
-              navigate(`${info._id}/user-manager`)
+              navigate(`/board?action=user-manager&id=${info._id}`)
             }}
           >
             Quản lý thành viên
@@ -117,22 +126,24 @@ const Board = () => {
     }
   }
 
+  console.log("boardList", boardList)
+
   return (
     <div className="flex flex-col gap-4">
       <div className="w-150">
         <Label htmlFor="input">Tìm kiếm</Label>
         <SearchInput
           searchValue={filter.term}
-          setSearchValue={(value) => setFilter({ ...filter, term: value })}
+          setSearchValue={(value) => setFilter({ ...filter, term: value, page: 1 })}
           placeholder="Tìm kiếm bảng"
         />
       </div>
       <BasicTable
         columns={columns}
-        data={boardList?.data || []}
+        data={boardList?.boards || []}
         pagination
         total={boardList?.total || 0}
-        page={filter.page + 1}
+        page={filter.page}
         pageSize={filter.size}
         onPageChange={setFilter}
         onPageSizeChange={(size: any) => setFilter({ ...filter, size: size })}

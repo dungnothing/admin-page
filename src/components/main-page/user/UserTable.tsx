@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button"
 const UserTable = () => {
   const [userList, setUserList] = useState<any>()
   const [filter, setFilter] = useState<any>({
-    page: 0,
+    page: 1,
     size: 20,
     term: "",
   })
@@ -26,7 +26,7 @@ const UserTable = () => {
 
   const fetchUserList = async () => {
     try {
-      const response = await getUserAPI({ page: filter.page + 1, size: filter.size, term: debouncedSearchValue })
+      const response = await getUserAPI({ page: filter.page, size: filter.size, term: debouncedSearchValue })
       setUserList(response)
     } catch (error) {
       toast.error("Lỗi khi tải dữ liệu")
@@ -81,14 +81,14 @@ const UserTable = () => {
         <MoreAction>
           <DropdownItem
             onClick={() => {
-              navigate(`${info._id}/edit`)
+              navigate(`/user?action=edit&id=${info._id}`)
             }}
           >
             Xem thông tin
           </DropdownItem>
           <DropdownItem
             onClick={() => {
-              navigate(`${info._id}/subscription`)
+              navigate(`/user?action=subscription&id=${info._id}`)
             }}
           >
             Nâng cấp gói
@@ -120,7 +120,7 @@ const UserTable = () => {
         <Label htmlFor="input">Tìm kiếm</Label>
         <SearchInput
           searchValue={filter.term}
-          setSearchValue={(value) => setFilter({ ...filter, term: value })}
+          setSearchValue={(value) => setFilter({ ...filter, term: value, page: 1 })}
           placeholder="Tìm kiếm người dùng"
         />
       </div>
