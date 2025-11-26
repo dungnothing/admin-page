@@ -8,6 +8,7 @@ import NotFound from "./pages/OtherPage/NotFound"
 import { Navigate, redirect } from "react-router-dom"
 import { isAuthenticated } from "./utils/auth"
 import AdminPage from "./pages/Admin/AdminPage"
+import BoardDetailPage from "./components/main-page/board/BoardDetailPage"
 
 export interface AppRoute {
   path?: string
@@ -38,6 +39,7 @@ export const routes: AppRoute[] = [
       { path: "/dashboard", element: <Home /> },
       { path: "/user", element: <UserList /> },
       { path: "/board", element: <BasicTables /> },
+      { path: "/board/:id", element: <BoardDetailPage /> },
       { path: "/admin", element: <AdminPage /> },
     ],
   },

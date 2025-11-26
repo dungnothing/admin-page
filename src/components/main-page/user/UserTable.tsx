@@ -1,9 +1,8 @@
 import SearchInput from "@/components/common/basic/SearchInput"
 import Label from "@/components/form/Label"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import BasicTable from "@/components/common/basic/tables/BasicTable"
-import { getUserAPI } from "@/apis/admin"
-import { useDebounce } from "@/hooks/useDebounce"
+import { deleteUserAPI } from "@/apis/admin"
 import dayjs from "dayjs"
 import MoreAction from "@/components/ui/dropdown/MoreAction"
 import { toast } from "react-toastify"
@@ -12,30 +11,10 @@ import { useNavigate } from "react-router-dom"
 import BasicDialog from "@/components/common/basic/BasicDialog"
 import { Button } from "@/components/ui/button"
 
-const UserTable = () => {
-  const [userList, setUserList] = useState<any>()
-  const [filter, setFilter] = useState<any>({
-    page: 1,
-    size: 20,
-    term: "",
-  })
-  const debouncedSearchValue = useDebounce(filter.term)
+const UserTable = ({ userList, filter, setFilter, fetchUserList }: any) => {
   const navigate = useNavigate()
   const [id, setId] = useState<any>()
   const [openDelete, setOpenDelete] = useState(false)
-
-  const fetchUserList = async () => {
-    try {
-      const response = await getUserAPI({ page: filter.page, size: filter.size, term: debouncedSearchValue })
-      setUserList(response)
-    } catch (error) {
-      toast.error("Lỗi khi tải dữ liệu")
-    }
-  }
-
-  useEffect(() => {
-    fetchUserList()
-  }, [filter.page, filter.size, debouncedSearchValue])
 
   const columns = [
     {
@@ -88,13 +67,6 @@ const UserTable = () => {
           </DropdownItem>
           <DropdownItem
             onClick={() => {
-              navigate(`/user?action=subscription&id=${info._id}`)
-            }}
-          >
-            Nâng cấp gói
-          </DropdownItem>
-          <DropdownItem
-            onClick={() => {
               setId(info._id)
               setOpenDelete(true)
             }}
@@ -106,11 +78,18 @@ const UserTable = () => {
     },
   ]
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
+    if (!id) return
+
     try {
-      console.log(id)
-    } catch (error) {
-      toast.error("Lỗi khi xóa người dùng")
+      await deleteUserAPI(id)
+      toast.success("Xóa người dùng thành công")
+      setOpenDelete(false)
+      setId(null)
+      // Refresh the user list
+      fetchUserList()
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Lỗi khi xóa người dùng")
     }
   }
 

@@ -2,7 +2,7 @@ import SearchInput from "@/components/common/basic/SearchInput"
 import Label from "@/components/form/Label"
 import { useState, useEffect } from "react"
 import BasicTable from "@/components/common/basic/tables/BasicTable"
-import { getBoardAPI } from "@/apis/admin"
+import { getBoardAPI, deleteBoardAPI } from "@/apis/admin"
 import { useDebounce } from "@/hooks/useDebounce"
 import dayjs from "dayjs"
 import MoreAction from "@/components/ui/dropdown/MoreAction"
@@ -36,6 +36,19 @@ const Board = () => {
   useEffect(() => {
     fetchBoardList()
   }, [filter.page, filter.size, debouncedSearchValue])
+
+  const handleDelete = async () => {
+    if (!id) return
+    try {
+      await deleteBoardAPI(id)
+      toast.success("Xóa bảng thành công")
+      setOpenDelete(false)
+      setId(null)
+      fetchBoardList()
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Lỗi khi xóa bảng")
+    }
+  }
 
   const columns = [
     {
@@ -93,7 +106,7 @@ const Board = () => {
         <MoreAction>
           <DropdownItem
             onClick={() => {
-              navigate(`/board?action=detail&id=${info._id}`)
+              navigate(`/board/${info._id}`)
             }}
           >
             Xem thông tin
@@ -107,7 +120,7 @@ const Board = () => {
           </DropdownItem>
           <DropdownItem
             onClick={() => {
-              setId(info.id)
+              setId(info._id)
               setOpenDelete(true)
             }}
           >
@@ -117,16 +130,6 @@ const Board = () => {
       ),
     },
   ]
-
-  const handleDelete = () => {
-    try {
-      console.log(id)
-    } catch (error) {
-      toast.error("Lỗi khi xóa bảng")
-    }
-  }
-
-  console.log("boardList", boardList)
 
   return (
     <div className="flex flex-col gap-4">

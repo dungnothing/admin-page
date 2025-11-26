@@ -4,13 +4,36 @@ import { Button } from "@/components/ui/button"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import EditUser from "../components/main-page/user/EditUser"
 import CreateUser from "../components/main-page/user/CreateUser"
-import UpdateSubcription from "../components/main-page/user/UpdateSubcription"
+import { useEffect, useState } from "react"
+import { getUserAPI } from "@/apis/admin"
+import { useDebounce } from "@/hooks/useDebounce"
+import { toast } from "react-toastify"
 
 export default function UserProfiles() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const action = searchParams.get("action")
   const id = searchParams.get("id")
+  const [userList, setUserList] = useState<any>()
+  const [filter, setFilter] = useState<any>({
+    page: 1,
+    size: 20,
+    term: "",
+  })
+  const debouncedSearchValue = useDebounce(filter.term)
+
+  const fetchUserList = async () => {
+    try {
+      const response = await getUserAPI({ page: filter.page, size: filter.size, term: debouncedSearchValue })
+      setUserList(response)
+    } catch (error) {
+      toast.error("Lỗi khi tải dữ liệu")
+    }
+  }
+
+  useEffect(() => {
+    fetchUserList()
+  }, [filter.page, filter.size, debouncedSearchValue])
 
   return (
     <>
@@ -23,11 +46,10 @@ export default function UserProfiles() {
           </Button>
         </div>
         <div className="space-y-6">
-          <UserTable />
+          <UserTable userList={userList} filter={filter} setFilter={setFilter} fetchUserList={fetchUserList} />
         </div>
-        {action === "edit" && id && <EditUser />}
-        {action === "create" && <CreateUser />}
-        {action === "subscription" && id && <UpdateSubcription />}
+        {action === "edit" && id && <EditUser fetchUserList={fetchUserList} />}
+        {action === "create" && <CreateUser fetchUserList={fetchUserList} />}
       </div>
     </>
   )

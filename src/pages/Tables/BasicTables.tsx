@@ -1,8 +1,7 @@
 import { useSearchParams } from "react-router-dom"
 import PageBreadcrumb from "../../components/common/PageBreadCrumb"
 import Board from "../../components/main-page/board/Board"
-import BoardDetail from "../../components/main-page/board/BoardDetail"
-import UserManager from "../../components/main-page/board/UserManager"
+import ManageBoardMembers from "../../components/main-page/board/ManageBoardMembers"
 
 export default function BasicTables() {
   const [searchParams] = useSearchParams()
@@ -18,8 +17,7 @@ export default function BasicTables() {
           <Board />
         </div>
       </div>
-      {action === "detail" && id && <BoardDetail />}
-      {action === "user-manager" && id && <UserManager />}
+      {action === "user-manager" && id && <ManageBoardMembers />}
     </>
   )
 }

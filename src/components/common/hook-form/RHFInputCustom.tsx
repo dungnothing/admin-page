@@ -13,13 +13,13 @@ const RHFInputCustom = ({ name, label, type = "text", disabled, maxWidth, requir
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <div className={`relative w-full max-w-[${maxWidth}px]`}>
+        <div className={`relative w-full`} style={{ maxWidth: maxWidth }}>
           {/* Input */}
           <input
             {...field}
             id={name}
             type={inputType}
-            placeholder=" "
+            autoFocus={false}
             disabled={disabled}
             className={`peer w-full border h-11 px-3 rounded-xl text-[14px] focus:border-[#6C63FF] focus:outline-none
               ${field?.value?.length > 0 ? "border-[#111827]" : "border-[#e5e7eb] hover:border-[#111827]"}

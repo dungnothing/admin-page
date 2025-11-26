@@ -19,7 +19,7 @@ const BasicDialog = ({ children, title, description, trigger, open, onOpenChange
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger>{trigger}</DialogTrigger>
-      <DialogContent>
+      <DialogContent aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
