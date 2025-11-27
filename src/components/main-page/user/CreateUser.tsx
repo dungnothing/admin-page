@@ -41,9 +41,9 @@ const CreateUser = ({ fetchUserList }: any) => {
     resolver: valibotResolver(schema),
     mode: "all",
     defaultValues: {
-      userName: "",
       email: "",
       password: "",
+      userName: "",
       address: "",
       phone: "",
       organization: "",
