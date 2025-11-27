@@ -3,7 +3,7 @@ import { UserStar } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
 
 // Assume these icons are imported from an icon library
-import { ChevronDownIcon, GridIcon, HorizontaLDots, PageIcon, TableIcon, UserCircleIcon } from "../icons"
+import { ChevronDownIcon, GridIcon, HorizontaLDots, TableIcon, UserCircleIcon } from "../icons"
 import { useSidebar } from "../context/SidebarContext"
 
 type NavItem = {
@@ -32,11 +32,7 @@ const navItems: NavItem[] = [
     icon: <TableIcon />,
     path: "/board",
   },
-  {
-    name: "Templates",
-    icon: <PageIcon />,
-    path: "/templates",
-  },
+
   // {
   //   name: "Pages",
   //   icon: <PageIcon />,
