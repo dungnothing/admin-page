@@ -84,3 +84,8 @@ export const getBoardDetailAPI = async (id: string) => {
   const response = await axiosInstance.get(`/v2/admins/board/${id}`)
   return response.data
 }
+
+export const getPaymentsAPI = async (query: any) => {
+  const response = await axiosInstance.get(`/v2/payments`, { params: query })
+  return response.data
+}
