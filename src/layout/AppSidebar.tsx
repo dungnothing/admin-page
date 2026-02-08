@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import { UserStar } from "lucide-react"
+import { UserStar, LayoutTemplate } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
 
 // Assume these icons are imported from an icon library
@@ -32,39 +32,12 @@ const navItems: NavItem[] = [
     icon: <TableIcon />,
     path: "/board",
   },
-
-  // {
-  //   name: "Pages",
-  //   icon: <PageIcon />,
-  //   subItems: [
-  //     { name: "Blank Page", path: "/blank", pro: false },
-  //     { name: "404 Error", path: "/error-404", pro: false },
-  //   ],
-  // },
+  {
+    name: "Templates",
+    icon: <LayoutTemplate />,
+    path: "/template",
+  },
 ]
-
-// const othersItems: NavItem[] = [
-//   {
-//     icon: <PieChartIcon />,
-//     name: "Charts",
-//     subItems: [
-//       { name: "Line Chart", path: "/line-chart", pro: false },
-//       { name: "Bar Chart", path: "/bar-chart", pro: false },
-//     ],
-//   },
-//   {
-//     icon: <BoxCubeIcon />,
-//     name: "UI Elements",
-//     subItems: [
-//       { name: "Alerts", path: "/alerts", pro: false },
-//       { name: "Avatar", path: "/avatars", pro: false },
-//       { name: "Badge", path: "/badge", pro: false },
-//       { name: "Buttons", path: "/buttons", pro: false },
-//       { name: "Images", path: "/images", pro: false },
-//       { name: "Videos", path: "/videos", pro: false },
-//     ],
-//   },
-// ]
 
 const othersItems: NavItem[] = [
   {

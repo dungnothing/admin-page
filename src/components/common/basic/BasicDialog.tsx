@@ -14,12 +14,13 @@ interface BasicDialogProps {
   trigger?: React.ReactNode
   open?: boolean
   onOpenChange?: (open: boolean) => void
+  className?: string
 }
-const BasicDialog = ({ children, title, description, trigger, open, onOpenChange }: BasicDialogProps) => {
+const BasicDialog = ({ children, title, description, trigger, open, onOpenChange, className }: BasicDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger>{trigger}</DialogTrigger>
-      <DialogContent aria-describedby={undefined}>
+      <DialogContent aria-describedby={undefined} className={className}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

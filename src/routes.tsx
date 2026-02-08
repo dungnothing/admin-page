@@ -6,6 +6,7 @@ import BasicTables from "./pages/Tables/BasicTables"
 import PaymentHistory from "./pages/PaymentHistory"
 import SignIn from "./pages/AuthPages/SignIn"
 import NotFound from "./pages/OtherPage/NotFound"
+import Template from "./components/main-page/template/Template"
 import { Navigate, redirect } from "react-router-dom"
 import { isAuthenticated } from "./utils/auth"
 import AdminPage from "./pages/Admin/AdminPage"
@@ -43,6 +44,7 @@ export const routes: AppRoute[] = [
       { path: "/board", element: <BasicTables /> },
       { path: "/board/:id", element: <BoardDetailPage /> },
       { path: "/admin", element: <AdminPage /> },
+      { path: "/template", element: <Template /> },
     ],
   },
   { path: "/signin", element: <SignIn />, loader: loginLoader },
