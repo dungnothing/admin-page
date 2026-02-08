@@ -1,0 +1,131 @@
+import SearchInput from "@/components/common/basic/SearchInput"
+import Label from "@/components/form/Label"
+import { useState } from "react"
+import BasicTable from "@/components/common/basic/tables/BasicTable"
+import { deleteUserAPI } from "@/apis/admin"
+import dayjs from "dayjs"
+import MoreAction from "@/components/ui/dropdown/MoreAction"
+import { toast } from "react-toastify"
+import { DropdownItem } from "@/components/ui/dropdown/DropdownItem"
+import { useNavigate } from "react-router-dom"
+import BasicDialog from "@/components/common/basic/BasicDialog"
+import { Button } from "@/components/ui/button"
+
+const UserTable = ({ userList, filter, setFilter, fetchUserList }: any) => {
+  const navigate = useNavigate()
+  const [id, setId] = useState<any>()
+  const [openDelete, setOpenDelete] = useState(false)
+
+  const columns = [
+    {
+      id: "index",
+      label: "STT",
+      width: "48px",
+      align: "center",
+      labelRender: () => <div className="w-full text-center text-text-tertiary font-semibold">STT</div>,
+    },
+    {
+      id: "fullName",
+      label: "Tên người dùng",
+      width: "240px",
+      align: "left" as const,
+      render: (info: any) => <div className="w-full text-brand-primary ">{info.userName}</div>,
+    },
+    {
+      id: "email",
+      label: "Email",
+      width: "240px",
+      align: "left" as const,
+    },
+    {
+      id: "phone",
+      label: "Số điện thoại",
+      width: "240px",
+      align: "left" as const,
+      render: (info: any) => <div className="w-full text-center">{info.phone || "--"}</div>,
+      labelRender: () => <div className="w-full text-center">Số điện thoại</div>,
+    },
+    {
+      id: "createdAt",
+      label: "Ngày tạo",
+      width: "240px",
+      align: "left" as const,
+      render: (info: any) => <div>{dayjs(info.createdAt).format("HH:mm - DD/MM/YYYY ")}</div>,
+    },
+    {
+      id: "action",
+      width: "48px",
+      align: "center" as const,
+      render: (info: any) => (
+        <MoreAction>
+          <DropdownItem
+            onClick={() => {
+              navigate(`/user?action=edit&id=${info._id}`)
+            }}
+          >
+            Xem thông tin
+          </DropdownItem>
+          <DropdownItem
+            onClick={() => {
+              setId(info._id)
+              setOpenDelete(true)
+            }}
+          >
+            Xóa người dùng
+          </DropdownItem>
+        </MoreAction>
+      ),
+    },
+  ]
+
+  const handleDelete = async () => {
+    if (!id) return
+
+    try {
+      await deleteUserAPI(id)
+      toast.success("Xóa người dùng thành công")
+      setOpenDelete(false)
+      setId(null)
+      // Refresh the user list
+      fetchUserList()
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Lỗi khi xóa người dùng")
+    }
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="w-150">
+        <Label htmlFor="input">Tìm kiếm</Label>
+        <SearchInput
+          searchValue={filter.term}
+          setSearchValue={(value) => setFilter({ ...filter, term: value, page: 1 })}
+          placeholder="Tìm kiếm người dùng"
+        />
+      </div>
+      <BasicTable
+        columns={columns}
+        data={userList?.data || []}
+        pagination={true}
+        total={userList?.total || 0}
+        page={filter.page}
+        pageSize={filter.size}
+        onPageChange={setFilter}
+        onPageSizeChange={(size: any) => setFilter({ ...filter, size: size })}
+      />
+      <BasicDialog open={openDelete} onOpenChange={setOpenDelete} title="Xóa người dùng">
+        <p>Bạn có chắc chắn muốn xóa người dùng này?</p>
+        <div className="flex justify-end gap-2">
+          <Button variant="secondary-outline" color="gray" onClick={() => setOpenDelete(false)}>
+            Hủy
+          </Button>
+          <Button onClick={handleDelete} variant="primary" color="hi-warning">
+            Xóa
+          </Button>
+        </div>
+      </BasicDialog>
+    </div>
+  )
+}
+
+export default UserTable

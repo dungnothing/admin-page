@@ -1,0 +1,169 @@
+import SearchInput from "@/components/common/basic/SearchInput"
+import Label from "@/components/form/Label"
+import { useState, useEffect } from "react"
+import BasicTable from "@/components/common/basic/tables/BasicTable"
+import { getBoardAPI, deleteBoardAPI } from "@/apis/admin"
+import { useDebounce } from "@/hooks/useDebounce"
+import dayjs from "dayjs"
+import MoreAction from "@/components/ui/dropdown/MoreAction"
+import { toast } from "react-toastify"
+import { DropdownItem } from "@/components/ui/dropdown/DropdownItem"
+import { useNavigate } from "react-router-dom"
+import BasicDialog from "@/components/common/basic/BasicDialog"
+import { Button } from "@/components/ui/button"
+
+const Board = () => {
+  const [boardList, setBoardList] = useState<any>()
+  const [filter, setFilter] = useState<any>({
+    page: 1,
+    size: 20,
+    term: "",
+  })
+  const debouncedSearchValue = useDebounce(filter.term)
+  const navigate = useNavigate()
+  const [id, setId] = useState<any>()
+  const [openDelete, setOpenDelete] = useState(false)
+
+  const fetchBoardList = async () => {
+    try {
+      const response = await getBoardAPI({ page: filter.page, size: filter.size, term: debouncedSearchValue })
+      setBoardList(response)
+    } catch (error) {
+      toast.error("Lỗi khi tải dữ liệu")
+    }
+  }
+
+  useEffect(() => {
+    fetchBoardList()
+  }, [filter.page, filter.size, debouncedSearchValue])
+
+  const handleDelete = async () => {
+    if (!id) return
+    try {
+      await deleteBoardAPI(id)
+      toast.success("Xóa bảng thành công")
+      setOpenDelete(false)
+      setId(null)
+      fetchBoardList()
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Lỗi khi xóa bảng")
+    }
+  }
+
+  const columns = [
+    {
+      id: "index",
+      label: "STT",
+      width: "48px",
+      align: "center",
+    },
+    {
+      id: "title",
+      label: "Tên bảng",
+      width: "240px",
+      align: "left" as const,
+      render: (info: any) => <div className="w-full text-brand-primary ">{info.title}</div>,
+    },
+    {
+      id: "owner",
+      label: "Chủ sở hữu",
+      width: "150px",
+      align: "left" as const,
+    },
+    {
+      id: "columnsCount",
+      label: "Số lượng cột",
+      width: "120px",
+      align: "center" as const,
+      render: (info: any) => <div className="w-full text-center">{info.columnsCount}</div>,
+    },
+    {
+      id: "cardsCount",
+      label: "Số lượng thẻ",
+      width: "120px",
+      align: "center" as const,
+      render: (info: any) => <div className="w-full text-center">{info.cardsCount}</div>,
+    },
+    {
+      id: "memberCount",
+      label: "SL thành viên",
+      width: "120px",
+      align: "center" as const,
+      render: (info: any) => <div className="w-full text-center">{info.memberCount}</div>,
+    },
+    {
+      id: "createdAt",
+      label: "Ngày tạo",
+      width: "240px",
+      align: "left" as const,
+      render: (info: any) => <div>{dayjs(info.createdAt).format("HH:mm - DD/MM/YYYY ")}</div>,
+    },
+    {
+      id: "action",
+      width: "48px",
+      align: "center" as const,
+      render: (info: any) => (
+        <MoreAction>
+          <DropdownItem
+            onClick={() => {
+              navigate(`/board/${info._id}`)
+            }}
+          >
+            Xem thông tin
+          </DropdownItem>
+          <DropdownItem
+            onClick={() => {
+              navigate(`/board?action=user-manager&id=${info._id}`)
+            }}
+          >
+            Quản lý thành viên
+          </DropdownItem>
+          <DropdownItem
+            onClick={() => {
+              setId(info._id)
+              setOpenDelete(true)
+            }}
+          >
+            Xóa bảng
+          </DropdownItem>
+        </MoreAction>
+      ),
+    },
+  ]
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="w-150">
+        <Label htmlFor="input">Tìm kiếm</Label>
+        <SearchInput
+          searchValue={filter.term}
+          setSearchValue={(value) => setFilter({ ...filter, term: value, page: 1 })}
+          placeholder="Tìm kiếm bảng"
+        />
+      </div>
+      <BasicTable
+        columns={columns}
+        data={boardList?.boards || []}
+        pagination
+        total={boardList?.total || 0}
+        page={filter.page}
+        pageSize={filter.size}
+        onPageChange={setFilter}
+        onPageSizeChange={(size: any) => setFilter({ ...filter, size: size })}
+      />
+      <BasicDialog open={openDelete} onOpenChange={setOpenDelete} title="Xóa bảng">
+        <p>Bạn có chắc chắn muốn xóa bảng này?</p>
+        <div className="flex justify-end gap-2">
+          <Button variant="secondary-outline" color="gray" onClick={() => setOpenDelete(false)}>
+            Hủy
+          </Button>
+          <Button onClick={handleDelete} variant="primary" color="hi-warning">
+            Xóa
+          </Button>
+        </div>
+      </BasicDialog>
+    </div>
+  )
+}
+
+export default Board
