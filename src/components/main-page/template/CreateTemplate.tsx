@@ -10,6 +10,7 @@ import FormProvider from "@/components/common/hook-form/FormProvider"
 import Input from "@/components/form/input/InputField"
 import { valibotResolver } from "@hookform/resolvers/valibot"
 import * as v from "valibot"
+import { createTemplateAPI } from "@/apis/admin"
 
 interface Card {
   id: string
@@ -105,17 +106,15 @@ const CreateTemplate = ({ fetchTemplateList }: CreateTemplateProps) => {
         columns: columns,
       }
 
-      console.log("Submitting template:", payload)
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      await createTemplateAPI(payload)
 
       toast.success("Tạo mẫu thành công")
       reset()
       setColumns([])
       setOpen(false)
       fetchTemplateList?.()
-    } catch (error) {
-      toast.error("Có lỗi xảy ra khi tạo mẫu")
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Có lỗi xảy ra khi tạo mẫu")
     }
   }
 

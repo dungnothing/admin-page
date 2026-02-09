@@ -89,3 +89,13 @@ export const getPaymentsAPI = async (query: any) => {
   const response = await axiosInstance.get(`/v2/payments`, { params: query })
   return response.data
 }
+
+export const createTemplateAPI = async (data: any) => {
+  const response = await axiosInstance.post("/v2/templates", data)
+  return response.data
+}
+
+export const getTemplatesAPI = async () => {
+  const response = await axiosInstance.get("/v2/templates")
+  return response.data
+}

@@ -19,7 +19,7 @@ interface BasicDialogProps {
 const BasicDialog = ({ children, title, description, trigger, open, onOpenChange, className }: BasicDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger>{trigger}</DialogTrigger>
+      <DialogTrigger asChild={true}>{trigger}</DialogTrigger>
       <DialogContent aria-describedby={undefined} className={className}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>

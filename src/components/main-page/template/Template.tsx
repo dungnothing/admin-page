@@ -1,6 +1,6 @@
 import PageBreadcrumb from "../../common/PageBreadCrumb"
 
-import { useState } from "react"
+import { useState, useEffect, useMemo } from "react"
 import BasicTable from "@/components/common/basic/tables/BasicTable"
 import Label from "@/components/form/Label"
 import SearchInput from "@/components/common/basic/SearchInput"
@@ -9,6 +9,9 @@ import MoreAction from "@/components/ui/dropdown/MoreAction"
 import { DropdownItem } from "@/components/ui/dropdown/DropdownItem"
 
 import CreateTemplate from "./CreateTemplate"
+import { getTemplatesAPI } from "@/apis/admin"
+import { toast } from "react-toastify"
+import { useDebounce } from "@/hooks/useDebounce"
 
 const Template = () => {
   const [filter, setFilter] = useState<any>({
@@ -16,31 +19,43 @@ const Template = () => {
     size: 20,
     term: "",
   })
+  const [allTemplates, setAllTemplates] = useState<any[]>([])
 
-  // Mock data for display
-  const templateList = {
-    data: [
-      {
-        _id: "1",
-        name: "Mẫu báo cáo tuần",
-        description: "Mẫu báo cáo công việc hàng tuần cho nhân viên",
-        createdAt: "2023-11-01T08:00:00Z",
-      },
-      {
-        _id: "2",
-        name: "Mẫu kế hoạch dự án",
-        description: "Khung kế hoạch chi tiết cho dự án mới",
-        createdAt: "2023-11-05T09:30:00Z",
-      },
-      {
-        _id: "3",
-        name: "Mẫu đánh giá nhân sự",
-        description: "Form đánh giá định kỳ hằng năm",
-        createdAt: "2023-11-10T14:15:00Z",
-      },
-    ],
-    total: 3,
+  const debouncedSearchTerm = useDebounce(filter.term, 500)
+
+  const fetchTemplateList = async () => {
+    try {
+      const data = await getTemplatesAPI()
+      // Ensure data is an array
+      setAllTemplates(Array.isArray(data) ? data : [])
+    } catch (error) {
+      toast.error("Lỗi khi tải danh sách mẫu")
+      setAllTemplates([])
+    }
   }
+
+  useEffect(() => {
+    fetchTemplateList()
+  }, [])
+
+  // Client-side filtering and pagination
+  const { data, total } = useMemo(() => {
+    let filtered = allTemplates
+
+    if (debouncedSearchTerm) {
+      const lowerTerm = debouncedSearchTerm.toLowerCase()
+      filtered = filtered.filter(
+        (item) => item.title?.toLowerCase().includes(lowerTerm) || item.description?.toLowerCase().includes(lowerTerm),
+      )
+    }
+
+    const total = filtered.length
+    const start = (filter.page - 1) * filter.size
+    const end = start + filter.size
+    const data = filtered.slice(start, end)
+
+    return { data, total }
+  }, [allTemplates, debouncedSearchTerm, filter.page, filter.size])
 
   const columns = [
     {
@@ -49,13 +64,17 @@ const Template = () => {
       width: "48px",
       align: "center",
       labelRender: () => <div className="w-full text-center text-text-tertiary font-semibold">STT</div>,
+      render: (_: any, index: number) => {
+        const order = (filter.page - 1) * filter.size + index + 1
+        return <div className="w-full text-center">{order}</div>
+      },
     },
     {
-      id: "name",
+      id: "title",
       label: "Tên mẫu",
       width: "240px",
       align: "left" as const,
-      render: (info: any) => <div className="w-full text-brand-primary font-medium">{info.name}</div>,
+      render: (info: any) => <div className="w-full text-brand-primary font-medium">{info.title}</div>,
     },
     {
       id: "description",
@@ -101,7 +120,7 @@ const Template = () => {
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
         <div className="flex items-center justify-between">
           <h3 className="mb-5 text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-7">Danh sách mẫu</h3>
-          <CreateTemplate />
+          <CreateTemplate fetchTemplateList={fetchTemplateList} />
         </div>
         <div className="space-y-6">
           <div className="flex flex-col gap-4">
@@ -115,9 +134,9 @@ const Template = () => {
             </div>
             <BasicTable
               columns={columns}
-              data={templateList?.data || []}
+              data={data}
               pagination={true}
-              total={templateList?.total || 0}
+              total={total}
               page={filter.page}
               pageSize={filter.size}
               onPageChange={(page) => setFilter({ ...filter, page: page })}
