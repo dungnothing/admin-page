@@ -193,6 +193,11 @@ const CreateTemplate = ({ fetchTemplateList }: CreateTemplateProps) => {
                             placeholder="Thêm thẻ..."
                             value={newCardTitles[column.id] || ""}
                             onChange={(e) => setNewCardTitles({ ...newCardTitles, [column.id]: e.target.value })}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                handleAddCard(column.id)
+                              }
+                            }}
                             className="!h-10"
                           />
                         </div>
@@ -216,6 +221,11 @@ const CreateTemplate = ({ fetchTemplateList }: CreateTemplateProps) => {
                     placeholder="Nhập tên cột mới..."
                     value={newColumnTitle}
                     onChange={(e) => setNewColumnTitle(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleAddColumn()
+                      }
+                    }}
                     className="bg-white dark:bg-gray-900 !h-10 w-full"
                   />
                   <Button
