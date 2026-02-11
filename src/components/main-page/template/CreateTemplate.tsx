@@ -142,6 +142,13 @@ const CreateTemplate = ({ fetchTemplateList }: CreateTemplateProps) => {
 
             <div>
               <Label>
+                Mô tả <span className="text-red-500">*</span>
+              </Label>
+              <RHFInput name="description" placeholder="Nhập mô tả..." />
+            </div>
+
+            <div>
+              <Label>
                 Link ảnh nền <span className="text-red-500">*</span>
               </Label>
               <RHFInput name="backgroundImageLink" placeholder="Nhập link ảnh nền..." />
